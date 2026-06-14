@@ -31,7 +31,5 @@ public partial class Dealer
 
     public virtual User? CreatedByUser { get; set; }
 
-    public virtual ICollection<TestRideBooking> TestRideBookings { get; set; } = new List<TestRideBooking>();
-
     public virtual User? UpdatedByUser { get; set; }
 }

@@ -27,6 +27,8 @@ public partial class User
 
     public bool IsDeleted { get; set; }
 
+    public string? PasswordHash { get; set; }
+
     public virtual ICollection<Brand> BrandCreatedByUsers { get; set; } = new List<Brand>();
 
     public virtual ICollection<Brand> BrandUpdatedByUsers { get; set; } = new List<Brand>();
@@ -42,6 +44,8 @@ public partial class User
     public virtual ICollection<Motorcycle> MotorcycleCreatedByUsers { get; set; } = new List<Motorcycle>();
 
     public virtual ICollection<Motorcycle> MotorcycleUpdatedByUsers { get; set; } = new List<Motorcycle>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual Role Role { get; set; } = null!;
 

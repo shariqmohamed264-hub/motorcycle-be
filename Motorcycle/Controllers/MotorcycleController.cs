@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Motorcycle.Interfaces;
@@ -7,6 +8,7 @@ namespace Motorcycle.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
+[Authorize(Roles = "Admin,User")]
 public class MotorcycleController : ControllerBase
 {
     private readonly IMotorcycleService _service;

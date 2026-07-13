@@ -23,15 +23,15 @@ public partial class MotorcycleDbContext : DbContext
 
     public virtual DbSet<Motorcycle> Motorcycles { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<TestRideBooking> TestRideBookings { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=MotorcycleDb;Trusted_Connection=True;TrustServerCertificate=True;");
+ 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -127,6 +127,22 @@ public partial class MotorcycleDbContext : DbContext
                 .HasConstraintName("FK_Motorcycles_UpdatedBy");
         });
 
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__RefreshT__3214EC07E31AA9CD");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getutcdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
+            entity.Property(e => e.Token).HasMaxLength(500);
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RefreshTokens_Users");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC07FC2E4B2C");
@@ -149,11 +165,6 @@ public partial class MotorcycleDbContext : DbContext
             entity.HasOne(d => d.CreatedByUser).WithMany(p => p.TestRideBookingCreatedByUsers)
                 .HasForeignKey(d => d.CreatedByUserId)
                 .HasConstraintName("FK_TestRideBookings_CreatedBy");
-
-            entity.HasOne(d => d.Dealer).WithMany(p => p.TestRideBookings)
-                .HasForeignKey(d => d.DealerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TestRideBookings_Dealers");
 
             entity.HasOne(d => d.Motorcycle).WithMany(p => p.TestRideBookings)
                 .HasForeignKey(d => d.MotorcycleId)
@@ -181,6 +192,9 @@ public partial class MotorcycleDbContext : DbContext
             entity.Property(e => e.GoogleId).HasMaxLength(200);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Name).HasMaxLength(150);
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
             entity.Property(e => e.ProfilePictureUrl).HasMaxLength(500);
 

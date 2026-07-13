@@ -108,6 +108,10 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 builder.Services.AddAuthorization();
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+Console.WriteLine(connectionString);
 builder.Services.AddDbContext<MotorcycleDbContext>(
     options =>
         options.UseSqlServer(
@@ -123,11 +127,9 @@ builder.Services.AddScoped<ITestRideService, TestRideService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 

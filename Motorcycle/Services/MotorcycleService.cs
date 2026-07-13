@@ -7,6 +7,7 @@ namespace Motorcycle.Services
 {
     public class MotorcycleService : IMotorcycleService
     {
+        //motorcycleservice
         private readonly MotorcycleDbContext _context;
 
         public MotorcycleService(MotorcycleDbContext context)

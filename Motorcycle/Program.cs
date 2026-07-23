@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Angular",
         policy =>
         {
-            policy.WithOrigins("https://motorcycle-api-d8g3dtfhh6cpdjfy.centralindia-01.azurewebsites.net")
+            policy.WithOrigins("https://red-pond-048822e00.7.azurestaticapps.net")
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });
